@@ -566,7 +566,7 @@ class Chain {
      * @returns {Chain}
      */
     static copy(o) {
-        if (!o._head || !o._totalWork || !o._height) {
+        if (!o._head) {
             throw 'Invalid object to copy';
         }
         const head = Block.copy(o._head);

@@ -22,7 +22,7 @@ class AccountsTreeNode {
      * @returns {AccountsTreeNode}
      */
     static copy(o) {
-        if (!o._type || !o._prefix || (!o._children && !o._account)) {
+        if (!o._children && !o._account) {
             throw 'Invalid object to copy';
         }
         let arg;

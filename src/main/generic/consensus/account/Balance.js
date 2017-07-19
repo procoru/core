@@ -4,9 +4,6 @@ class Balance {
      * @returns {Balance}
      */
     static copy(o) {
-        if (!o._value || !o._nonce) {
-            throw 'Invalid object to copy';
-        }
         return new Balance(o._value, o._nonce);
     }
 

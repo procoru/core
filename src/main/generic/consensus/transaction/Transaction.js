@@ -6,7 +6,7 @@ class Transaction {
      * @returns {Transaction}
      */
     static copy(o) {
-        if (!o._version || !o._senderPubKey || !o._recipientAddr || !o._value || !o._fee || !o._nonce || !o._signature) {
+        if (!o._senderPubKey || !o._recipientAddr || !o._signature) {
             throw 'Invalid object to copy';
         }
         const senderPubKey = PublicKey.copy(o._senderPubKey);

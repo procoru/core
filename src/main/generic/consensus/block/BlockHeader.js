@@ -4,8 +4,7 @@ class BlockHeader {
      * @returns {BlockHeader}
      */
     static copy(o) {
-        if (!o._version || !o._prevHash || !o._bodyHash
-            || !o._accountsHash || !o._nBits || !o._height || !o._timestamp || !o._nonce) {
+        if (!o._prevHash || !o._bodyHash || !o._accountsHash) {
             throw 'Invalid object to copy';
         }
         const prevHash = Hash.copy(o._prevHash);
