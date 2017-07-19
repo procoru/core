@@ -14,7 +14,8 @@ class Address extends Primitive {
         if (!o._obj) {
             throw 'Invalid object to copy';
         }
-        return new Address(o._obj);
+        const obj = new Uint8Array(o._obj);
+        return new Address(obj);
     }
 
     constructor(arg) {

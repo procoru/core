@@ -11,7 +11,7 @@ class TypedDB {
 
     getObject(key) {
         return new Promise((resolve, error) => {
-            this._db.get(key, {valueEncoding: 'json'}, (err, value) => {
+            this._db.get(key, {valueEncoding: TypedDB.JSON_ENCODING}, (err, value) => {
                 if (err) {
                     resolve(undefined);
                     return;
@@ -23,7 +23,7 @@ class TypedDB {
 
     putObject(key, value) {
         return new Promise((resolve, error) => {
-            this._db.put(key, value, {valueEncoding: 'json'}, err => err ? error(err) : resolve());
+            this._db.put(key, value, {valueEncoding: TypedDB.JSON_ENCODING}, err => err ? error(err) : resolve());
         });
     }
 
@@ -59,6 +59,17 @@ class TypedDB {
         return new TypedDBTransaction(this);
     }
 }
+TypedDB.JSON_ENCODING = {
+    encode: val => JSON.stringify(val, (k, v) => {
+        if (v instanceof Uint8Array) {
+            return Array.from(v);
+        }
+        return v;
+    }),
+    decode: JSON.parse,
+    buffer: false,
+    type: 'json'
+};
 Class.register(TypedDB);
 
 class NativeDBTransaction extends Observable {
@@ -72,7 +83,7 @@ class NativeDBTransaction extends Observable {
     }
 
     putObject(key, value) {
-        this._batch.put(key, value, {valueEncoding: 'json'});
+        this._batch.put(key, value, {valueEncoding: TypedDB.JSON_ENCODING});
     }
 
     putString(key, value) {

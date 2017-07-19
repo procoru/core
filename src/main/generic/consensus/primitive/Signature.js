@@ -7,7 +7,8 @@ class Signature extends Primitive {
         if (!o._obj) {
             throw 'Invalid object to copy';
         }
-        return new Signature(o._obj);
+        const obj = new Uint8Array(o._obj);
+        return new Signature(obj);
     }
 
     /**

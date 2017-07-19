@@ -7,7 +7,8 @@ class Hash extends Primitive {
         if (!o._obj) {
             throw 'Invalid object to copy';
         }
-        return new Hash(o._obj);
+        const obj = new Uint8Array(o._obj);
+        return new Hash(obj);
     }
 
     /**
