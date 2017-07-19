@@ -1,5 +1,16 @@
 class Signature extends Primitive {
     /**
+     * @param {{_obj}} o
+     * @returns {Signature}
+     */
+    static copy(o) {
+        if (!o._obj) {
+            throw 'Invalid object to copy';
+        }
+        return new Signature(o._obj);
+    }
+
+    /**
      * @param arg
      * @private
      */

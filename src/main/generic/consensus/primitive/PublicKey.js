@@ -1,5 +1,16 @@
 class PublicKey extends Primitive {
     /**
+     * @param {{_obj}} o
+     * @returns {PublicKey}
+     */
+    static copy(o) {
+        if (!o._obj) {
+            throw 'Invalid object to copy';
+        }
+        return new PublicKey(o._obj);
+    }
+
+    /**
      * @param arg
      * @private
      */

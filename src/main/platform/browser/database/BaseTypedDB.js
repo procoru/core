@@ -46,7 +46,7 @@ class BaseTypedDB {
     }
 
     constructor(tableName, type) {
-        if (type && !type.unserialize) throw 'TypedDB requires type with .unserialize()';
+        if (type && !type.copy) throw 'TypedDB requires type with .copy()';
         this._tableName = tableName;
         this._type = type;
     }
@@ -72,12 +72,11 @@ class BaseTypedDB {
     }
 
     getObject(key) {
-        return this._get(key).then(value => value && this._type ? this._type.unserialize(new SerialBuffer(value)) : value);
+        return this._get(key).then(value => value && this._type ? this._type.copy(value) : value);
     }
 
     putObject(key, value) {
-        if (this._type && !value.serialize) throw 'TypedDB requires objects with .serialize()';
-        return this._put(key, this._type ? value.serialize() : value);
+        return this._put(key, value);
     }
 
     getString(key) {
@@ -129,8 +128,7 @@ class NativeDBTransaction extends Observable {
 
     putObject(key, value) {
         if (this._finished) throw 'Transaction is already finished!';
-        if (this._type && !value.serialize) throw 'TypedDB requires objects with .serialize()';
-        return this._store.put(this._type ? value.serialize() : value, key);
+        return this._store.put(value, key);
     }
 
     putString(key, value) {

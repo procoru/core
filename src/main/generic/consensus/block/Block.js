@@ -1,5 +1,19 @@
 class Block {
     /**
+     * @param {{_header:BlockHeader, _body:BlockBody}} o
+     * @returns {Block}
+     */
+    static copy(o) {
+        if (!o._header || !o._body) {
+            throw 'Invalid object to copy';
+        }
+        return new Block(
+            BlockHeader.copy(o._header),
+            BlockBody.copy(o._body)
+        );
+    }
+
+    /**
      * @param {BlockHeader} header
      * @param {BlockBody} body
      */

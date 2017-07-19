@@ -2,6 +2,20 @@
 // TODO V2: Copy 'serialized' to detach all outer references
 class Transaction {
     /**
+     * @param {{_version, _senderPubKey, _recipientAddr, _value, _fee, _nonce, _signature}} o
+     * @returns {Transaction}
+     */
+    static copy(o) {
+        if (!o._version || !o._senderPubKey || !o._recipientAddr || !o._value || !o._fee || !o._nonce || !o._signature) {
+            throw 'Invalid object to copy';
+        }
+        const senderPubKey = PublicKey.copy(o._senderPubKey);
+        const recipientAddr = Address.copy(o._recipientAddr);
+        const signature = o._signature !== undefined ? Signature.copy(o._signature) : undefined;
+        return new Transaction(senderPubKey, recipientAddr, o._value, o._fee, o._nonce, signature, version);
+    }
+
+    /**
      * @param {PublicKey} senderPubKey
      * @param {Address} recipientAddr
      * @param {number} value

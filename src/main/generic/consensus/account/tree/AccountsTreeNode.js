@@ -18,6 +18,23 @@ class AccountsTreeNode {
     }
 
     /**
+     * @param {{_type, _prefix, ?_children, ?_account}} o
+     * @returns {AccountsTreeNode}
+     */
+    static copy(o) {
+        if (!o._type || !o._prefix || (!o._children && !o._account)) {
+            throw 'Invalid object to copy';
+        }
+        let arg;
+        if (AccountsTreeNode.isBranchType(o._type)) {
+            arg = Account.copy(o._account);
+        } else {
+            arg = o._children;
+        }
+        return new AccountsTreeNode(o._type, o._prefix, arg);
+    }
+
+    /**
      * @param type
      * @param {string} prefix
      * @param {Account|Array.<string>} arg

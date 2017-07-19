@@ -1,5 +1,16 @@
 class Hash extends Primitive {
     /**
+     * @param {{_obj}} o
+     * @returns {Hash}
+     */
+    static copy(o) {
+        if (!o._obj) {
+            throw 'Invalid object to copy';
+        }
+        return new Hash(o._obj);
+    }
+
+    /**
      * @param {?Uint8Array} arg
      * @private
      */

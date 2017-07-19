@@ -1,5 +1,23 @@
 class BlockHeader {
     /**
+     * @param {{_version, _prevHash, _bodyHash, _accountsHash, _nBits, _height, _timestamp, _nonce}} o
+     * @returns {BlockHeader}
+     */
+    static copy(o) {
+        if (!o._version || !o._prevHash || !o._bodyHash
+            || !o._accountsHash || !o._nBits || !o._height || !o._timestamp || !o._nonce) {
+            throw 'Invalid object to copy';
+        }
+        const prevHash = Hash.copy(o._prevHash);
+        const bodyHash = Hash.copy(o._bodyHash);
+        const accountsHash = Hash.copy(o._accountsHash);
+        return new BlockHeader(
+            prevHash, bodyHash, accountsHash,
+            o._nBits, o._height, o._timestamp, o._nonce, o._version
+        );
+    }
+
+    /**
      * @param {Hash} prevHash
      * @param {Hash} bodyHash
      * @param {Hash} accountsHash

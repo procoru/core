@@ -2,7 +2,7 @@ var levelup = require('levelup');
 
 class TypedDB {
     constructor(tableName, type) {
-        if (!type || !type.unserialize) throw 'NodeJS TypedDB requires type with .unserialize()';
+        if (!type || !type.copy) throw 'NodeJS TypedDB requires type with .copy()';
         this._db = levelup('./database/' + tableName, {
             keyEncoding: 'ascii'
         });
@@ -11,22 +11,19 @@ class TypedDB {
 
     getObject(key) {
         return new Promise((resolve, error) => {
-            this._db.get(key, {valueEncoding: 'binary'}, (err, value) => {
+            this._db.get(key, {valueEncoding: 'json'}, (err, value) => {
                 if (err) {
                     resolve(undefined);
                     return;
                 }
-                const buf = new SerialBuffer(value);
-                resolve(this._type.unserialize(buf));
+                resolve(this._type.copy(value));
             });
         });
     }
 
     putObject(key, value) {
         return new Promise((resolve, error) => {
-            if (!value.serialize) throw 'NodeJS TypedDB required objects with .serialize()';
-            const buf = value.serialize();
-            this._db.put(key, buf, {valueEncoding: 'binary'}, err => err ? error(err) : resolve());
+            this._db.put(key, value, {valueEncoding: 'json'}, err => err ? error(err) : resolve());
         });
     }
 
@@ -75,9 +72,7 @@ class NativeDBTransaction extends Observable {
     }
 
     putObject(key, value) {
-        if (!value.serialize) throw 'NodeJS TypedDB required objects with .serialize()';
-        const buf = value.serialize();
-        this._batch.put(key, buf, {valueEncoding: 'binary'});
+        this._batch.put(key, value, {valueEncoding: 'json'});
     }
 
     putString(key, value) {

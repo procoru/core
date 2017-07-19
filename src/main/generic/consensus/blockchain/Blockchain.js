@@ -170,7 +170,7 @@ class Blockchain extends Observable {
     }
 
     /**
-     * 
+     *
      * @param block
      * @return {Promise.<number>}
      * @private
@@ -561,6 +561,23 @@ Blockchain.PUSH_ERR_ORPHAN_BLOCK = -2;
 Class.register(Blockchain);
 
 class Chain {
+    /**
+     * @param {{_head, _totalWork, _height}} o
+     * @returns {Chain}
+     */
+    static copy(o) {
+        if (!o._head || !o._totalWork || !o._height) {
+            throw 'Invalid object to copy';
+        }
+        const head = Block.copy(o._head);
+        return new Chain(head, o._totalWork, o._height);
+    }
+
+    /**
+     * @param {Block} head
+     * @param {number} totalWork
+     * @param {number} height
+     */
     constructor(head, totalWork, height = 1) {
         this._head = head;
         this._totalWork = totalWork ? totalWork : head.difficulty;

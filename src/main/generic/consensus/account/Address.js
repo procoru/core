@@ -6,6 +6,17 @@ class Address extends Primitive {
         return 20;
     }
 
+    /**
+     * @param {{_obj}} o
+     * @returns {Address}
+     */
+    static copy(o) {
+        if (!o._obj) {
+            throw 'Invalid object to copy';
+        }
+        return new Address(o._obj);
+    }
+
     constructor(arg) {
         super(arg, Uint8Array, Address.SERIALIZED_SIZE);
     }

@@ -1,5 +1,16 @@
 class KeyPair extends Primitive {
     /**
+     * @param {{_obj}} o
+     * @returns {KeyPair}
+     */
+    static copy(o) {
+        if (!o._obj) {
+            throw 'Invalid object to copy';
+        }
+        return new KeyPair(o._obj);
+    }
+
+    /**
      * @param arg
      * @private
      */

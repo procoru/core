@@ -1,4 +1,15 @@
 class Account {
+    /**
+     * @param {{_balance}} o
+     * @returns {Account}
+     */
+    static copy(o) {
+        if (!o._balance) {
+            throw 'Invalid object to copy';
+        }
+        return new Account(Balance.copy(o._balance));
+    }
+
     constructor(balance) {
         if (!balance || !(balance instanceof Balance)) throw 'Malformed balance';
         /** @type {Balance} */
