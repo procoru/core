@@ -27,9 +27,9 @@ class AccountsTreeNode {
         }
         let arg;
         if (AccountsTreeNode.isBranchType(o._type)) {
-            arg = Account.copy(o._account);
-        } else {
             arg = o._children;
+        } else {
+            arg = Account.copy(o._account);
         }
         return new AccountsTreeNode(o._type, o._prefix, arg);
     }
