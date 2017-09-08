@@ -10,13 +10,13 @@ class BlockchainStore {
 
 class PersistentBlockchainStore extends ObjectDB {
     constructor() {
-        super('blocks', Chain);
+        super('blocks');
     }
 
     async getMainChain() {
         const key = await ObjectDB.prototype.getString.call(this, 'main');
         if (!key) return undefined;
-        return ObjectDB.prototype.getObject.call(this, key);
+        return ObjectDB.prototype.get.call(this, key);
     }
 
     async setMainChain(mainChain) {

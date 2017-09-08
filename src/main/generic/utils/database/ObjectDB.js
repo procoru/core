@@ -1,6 +1,20 @@
-class ObjectDB extends TypedDB {
-    constructor(tableName, type) {
-        super(tableName, type);
+class ObjectDB {
+    /**
+     * @param tableName
+     * @returns {Promise}
+     */
+    constructor(tableName) {
+        this._tableName = tableName;
+        return this._init();
+    }
+
+    /**
+     * @returns {Promise.<void>}
+     * @private
+     */
+    async _init() {
+        const db = await BaseTypedDB.db();
+        this._store = db.getObjectStore(this._tableName);
     }
 
     /**
@@ -14,11 +28,13 @@ class ObjectDB extends TypedDB {
     }
 
     /**
+     *
      * @param {string} key
-     * @returns {Promise.<object>}
+     * @param {function(obj:*):*} decoder
+     * @returns {Promise.<Object>}
      */
-    async get(key) {
-        return await TypedDB.prototype.getObject.call(this, key);
+    async get(key, decoder=undefined) {
+        return await this._store.get(key, decoder);
     }
 
     /**
@@ -27,7 +43,25 @@ class ObjectDB extends TypedDB {
      */
     async put(obj) {
         const key = await this.key(obj);
-        await TypedDB.prototype.putObject.call(this, key, obj);
+        await this._store.put(key, obj);
+        return key;
+    }
+
+    /**
+     * @param {string} key
+     * @returns {Promise.<string>}
+     */
+    getString(key) {
+        return this._store.get(key, null);
+    }
+
+    /**
+     * @param {string} key
+     * @param {string} value
+     * @returns {Promise.<string>}
+     */
+    async putString(key, value) {
+        await this._store.put(key, value);
         return key;
     }
 
@@ -37,30 +71,22 @@ class ObjectDB extends TypedDB {
      */
     async remove(obj) {
         const key = await this.key(obj);
-        await TypedDB.prototype.remove.call(this, key);
+        await this._store.remove(key);
         return key;
     }
 
     /**
-     * @returns {Promise.<{get: Function, put: Function, remove: Function}>}
+     * @returns {Transaction}
      */
     async transaction() {
-        const tx = await TypedDB.prototype.transaction.call(this);
-        const that = this;
-
-        tx.get = key => tx.getObject(key);
-        tx.put = async function (obj) {
-            const key = await that.key(obj);
-            await tx.putObject(key, obj);
-            return key;
+        const tx = this._store.transaction();
+        tx.getString = function(key) {
+            return tx.get(key, null);
         };
-        const superRemove = tx.remove.bind(tx);
-        tx.remove = async function (obj) {
-            const key = await that.key(obj);
-            await superRemove(key);
+        tx.putString = async function(key, value) {
+            await tx.put(key, value);
             return key;
-        };
-
+        }
         return tx;
     }
 }

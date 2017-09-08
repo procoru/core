@@ -96,7 +96,7 @@ class AccountsTreeStoreTransaction {
  */
 class PersistentAccountsTreeStore extends ObjectDB {
     constructor() {
-        super('accounts', AccountsTreeNode);
+        super('accounts');
     }
 
     /**

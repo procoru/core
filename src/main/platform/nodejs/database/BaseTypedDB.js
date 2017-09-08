@@ -1,9 +1,11 @@
+const JDB = require('jungle-db');
+
 class BaseTypedDB {
     static async get db() {
         if (BaseTypedDB._db) return Promise.resolve(BaseTypedDB._db);
 
         const dbVersion = 4;
-        const db = new JungleDB('nimiq', dbVersion);
+        const db = new JDB.JungleDB('nimiq', dbVersion);
         BaseTypedDB._db = db;
 
         // Create object stores and indices here.
