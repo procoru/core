@@ -4,6 +4,7 @@
 /src/main/platform/nodejs/node_modules
 /src/main/platform/nodejs/database/tables
 /src/main/platform/nodejs/database/keys
+/src/main/platform/nodejs/nimiq
 /clients/nodejs/node_modules
 /clients/nodejs/database
 /clients/nodejs/localhost.*
