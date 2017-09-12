@@ -22,6 +22,9 @@ class AccountsTreeNode {
      * @returns {AccountsTreeNode}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._children && !o._account) {
             throw 'Invalid object to copy';
         }

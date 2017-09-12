@@ -4,6 +4,9 @@ class BlockHeader {
      * @returns {BlockHeader}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._prevHash || !o._bodyHash || !o._accountsHash) {
             throw 'Invalid object to copy';
         }

@@ -4,6 +4,7 @@ const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
 const concat = require('gulp-concat');
 const connect = require('gulp-connect');
+const rename = require('gulp-rename');
 const jasmine = require('gulp-jasmine-livereload-task');
 const merge = require('merge2');
 const source = require('vinyl-source-stream');
@@ -18,8 +19,6 @@ const sources = {
             './src/main/platform/browser/utils/LogNative.js',
             './src/main/generic/utils/Log.js',
             './src/main/generic/utils/Observable.js',
-            './src/main/platform/browser/database/BaseTypedDB.js',
-            './src/main/platform/browser/database/TypedDB.js',
             './src/main/platform/browser/crypto/CryptoLib.js',
             './src/main/platform/browser/network/NetworkConfig.js',
             './src/main/platform/browser/network/webrtc/WebRtcCertificate.js',
@@ -33,7 +32,7 @@ const sources = {
             './src/main/platform/nodejs/utils/LogNative.js',
             './src/main/generic/utils/Log.js',
             './src/main/generic/utils/Observable.js',
-            './src/main/platform/nodejs/database/TypedDB.js',
+            './src/main/platform/nodejs/database/JungleDB.js',
             './src/main/platform/nodejs/crypto/CryptoLib.js',
             './src/main/platform/nodejs/network/webrtc/WebRtcConnector.js',
             './src/main/platform/nodejs/network/websocket/WebSocketConnector.js',
@@ -55,8 +54,8 @@ const sources = {
         './src/main/generic/utils/buffer/SerialBuffer.js',
         './src/main/generic/utils/crypto/Crypto.js',
         './src/main/generic/utils/crc/CRC32.js',
+        './src/main/generic/utils/database/BaseTypedDB.js',
         './src/main/generic/utils/database/ObjectDB.js',
-        './src/main/generic/utils/database/TypedDBTransaction.js',
         './src/main/generic/utils/number/NumberUtils.js',
         './src/main/generic/utils/platform/PlatformUtils.js',
         './src/main/generic/utils/string/StringUtils.js',
@@ -111,7 +110,6 @@ const sources = {
         './src/main/generic/network/PeerConnection.js',
         './src/main/generic/network/Peer.js',
         './src/main/generic/miner/Miner.js',
-        './src/main/generic/wallet/WalletStore.js',
         './src/main/generic/wallet/Wallet.js',
         './src/main/generic/Core.js'
     ],
@@ -196,13 +194,22 @@ gulp.task('build-web-crypto', function () {
         .pipe(gulp.dest('dist'));
 });
 
+
 gulp.task('build-web', function () {
     return gulp.src(['./src/loader/prefix.js.template'].concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']))
-        .pipe(sourcemaps.init())
-        .pipe(concat('web.js'))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('dist'))
-        .pipe(connect.reload());
+            .pipe(sourcemaps.init())
+            .pipe(concat('web.js'))
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest('dist'))
+            .pipe(connect.reload());
+});
+
+gulp.task('copy-jdb', function() {
+   return gulp.src('./node_modules/jungle-db/dist/web*')
+           .pipe(rename(function (path) {
+               path.basename = 'jdb-' + path.basename;
+           }))
+           .pipe(gulp.dest('dist/jungle-db'));
 });
 
 gulp.task('build-loader', function () {
@@ -280,6 +287,6 @@ gulp.task('serve', ['watch'], function () {
     });
 });
 
-gulp.task('build', ['build-web', 'build-web-crypto', 'build-web-babel', 'build-loader', 'build-node']);
+gulp.task('build', ['build-web', 'build-web-crypto', 'build-web-babel', 'build-loader', 'build-node', 'copy-jdb']);
 
 gulp.task('default', ['build', 'serve']);

@@ -4,6 +4,9 @@ class PublicKey extends Primitive {
      * @returns {PublicKey}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._obj) {
             throw 'Invalid object to copy';
         }

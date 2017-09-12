@@ -4,6 +4,9 @@ class KeyPair extends Primitive {
      * @returns {KeyPair}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._obj) {
             throw 'Invalid object to copy';
         }

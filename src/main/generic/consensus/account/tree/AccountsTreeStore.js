@@ -43,10 +43,11 @@ class IAccountsTreeStore {
  */
 class AccountsTreeStore {
     /**
-     * @returns {AccountsTreeStore}
+     * @returns {Promise.<AccountsTreeStore>}
      */
-    static getPersistent() {
-        return new PersistentAccountsTreeStore();
+    static async getPersistent() {
+        const baseDB = await BaseTypedDB.db;
+        return new PersistentAccountsTreeStore(baseDB);
     }
 
     /**
@@ -95,8 +96,11 @@ class AccountsTreeStoreTransaction {
  * @implements {AccountsTreeStore}
  */
 class PersistentAccountsTreeStore extends ObjectDB {
-    constructor() {
-        super('accounts');
+    /**
+     * @param {JungleDB} db
+     */
+    constructor(db) {
+        super(db.getObjectStore('accounts'));
     }
 
     /**

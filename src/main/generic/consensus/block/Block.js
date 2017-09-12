@@ -4,6 +4,9 @@ class Block {
      * @returns {Block}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._header || !o._body) {
             throw 'Invalid object to copy';
         }

@@ -47,8 +47,8 @@ class AccountsTree extends Observable {
     /**
      * @returns {AccountsTree}
      */
-    static getPersistent() {
-        const store = AccountsTreeStore.getPersistent();
+    static async getPersistent() {
+        const store = await AccountsTreeStore.getPersistent();
         return new AccountsTree(store);
     }
 

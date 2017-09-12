@@ -1,6 +1,6 @@
 class Blockchain extends Observable {
-    static getPersistent(accounts) {
-        const store = BlockchainStore.getPersistent();
+    static async getPersistent(accounts) {
+        const store = await BlockchainStore.getPersistent();
         return new Blockchain(store, accounts);
     }
 
@@ -566,6 +566,9 @@ class Chain {
      * @returns {Chain}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._head) {
             throw 'Invalid object to copy';
         }

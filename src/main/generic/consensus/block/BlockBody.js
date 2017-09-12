@@ -5,6 +5,9 @@ class BlockBody {
      * @returns {BlockBody}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._minerAddr || !o._transactions) {
             throw 'Invalid object to copy';
         }

@@ -4,6 +4,9 @@ class Account {
      * @returns {Account}
      */
     static copy(o) {
+        if (o === undefined || o === null) {
+            return o;
+        }
         if (!o._balance) {
             throw 'Invalid object to copy';
         }

@@ -1,20 +1,18 @@
 class ObjectDB {
     /**
-     * @param tableName
-     * @returns {Promise}
+     * @param {IObjectStore} store
      */
-    constructor(tableName) {
-        this._tableName = tableName;
-        return this._init();
+    constructor(store) {
+        this._store = store;
     }
 
     /**
-     * @returns {Promise.<void>}
-     * @private
+     * @param {string} tableName
+     * @param {JungleDB} db
+     * @returns {ObjectDB}
      */
-    async _init() {
-        const db = await BaseTypedDB.db();
-        this._store = db.getObjectStore(this._tableName);
+    static fromTable(tableName, db) {
+        return new ObjectDB(db.getObjectStore(tableName));
     }
 
     /**
@@ -80,14 +78,7 @@ class ObjectDB {
      */
     async transaction() {
         const tx = this._store.transaction();
-        tx.getString = function(key) {
-            return tx.get(key, null);
-        };
-        tx.putString = async function(key, value) {
-            await tx.put(key, value);
-            return key;
-        }
-        return tx;
+        return new ObjectDB(tx);
     }
 }
 Class.register(ObjectDB);

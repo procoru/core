@@ -1,6 +1,6 @@
 const WebCrypto = require('node-webcrypto-ossl');
 global.webcrypto = new WebCrypto({
-    directory: 'database/keys'
+    directory: 'nimiq/keys'
 });
 
 class CryptoLib {

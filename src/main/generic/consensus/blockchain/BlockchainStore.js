@@ -1,6 +1,7 @@
 class BlockchainStore {
-    static getPersistent() {
-        return new PersistentBlockchainStore();
+    static async getPersistent() {
+        const baseDB = await BaseTypedDB.db;
+        return new PersistentBlockchainStore(baseDB);
     }
 
     static createVolatile() {
@@ -9,8 +10,11 @@ class BlockchainStore {
 }
 
 class PersistentBlockchainStore extends ObjectDB {
-    constructor() {
-        super('blocks');
+    /**
+     * @param {JungleDB} db
+     */
+    constructor(db) {
+        super(db.getObjectStore('blocks'));
     }
 
     async getMainChain() {

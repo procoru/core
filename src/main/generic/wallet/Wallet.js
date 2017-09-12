@@ -5,7 +5,8 @@ class Wallet {
      * @returns {Promise.<Wallet>} A Wallet object. If the persisted storage already stored a Wallet before, this will be reused.
      */
     static async getPersistent() {
-        const db = new WalletStore();
+        const baseDB = await BaseTypedDB.db;
+        const db = baseDB.getObjectStore('wallet');
         let keys = await db.get('keys');
         if (!keys) {
             keys = await KeyPair.generate();

@@ -1,9 +1,10 @@
-const JDB = require('jungle-db');
-
 class BaseTypedDB {
-    static async get db() {
+    static get db() {
         if (BaseTypedDB._db) return Promise.resolve(BaseTypedDB._db);
+        return BaseTypedDB.initDB();
+    }
 
+    static async initDB() {
         const dbVersion = 4;
         const db = new JDB.JungleDB('nimiq', dbVersion);
         BaseTypedDB._db = db;
