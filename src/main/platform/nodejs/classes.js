@@ -12,7 +12,7 @@ require('../../generic/utils/Services.js');
 require('../../generic/utils/Synchronizer.js');
 require('../../generic/utils/Timers.js');
 require('../../generic/utils/Version.js');
-require('./database/BaseTypedDB.js');
+require('../../generic/utils/database/BaseTypedDB.js');
 require('../../generic/utils/database/ObjectDB.js');
 require('../../generic/utils/array/IndexedArray.js');
 require('../../generic/utils/array/HashMap.js');
