@@ -75,7 +75,7 @@ class Nimiq {
         Nimiq._loadPromise = Nimiq._loadPromise ||
             new Promise(async (resolve, error) => {
                 let script = 'web.js';
-                let jdb_script = 'jungle-db/jdb-web.js';
+                let jdb_script = 'jungle-db/web.js';
 
                 if (!Nimiq._hasNativeClassSupport() || !Nimiq._hasProperScoping()) {
                     console.error('Unsupported browser');
@@ -83,7 +83,7 @@ class Nimiq {
                     return;
                 } else if (!Nimiq._hasAsyncAwaitSupport()) {
                     script = 'web-babel.js';
-                    jdb_script = 'jungle-db/jdb-web-babel.js';
+                    jdb_script = 'jungle-db/web-babel.js';
                     console.warn('Client lacks native support for async');
                 } else if (!Nimiq._hasProperCryptoApi() || !(await Nimiq._hasSupportForP256())) {
                     script = 'web-crypto.js';

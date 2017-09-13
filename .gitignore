@@ -11,6 +11,7 @@
 /dist/nimiq*
 /dist/web*
 /dist/node*
+/dist/jungle-db
 /dist/doc/
 .idea
 *.iml

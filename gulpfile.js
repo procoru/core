@@ -206,9 +206,6 @@ gulp.task('build-web', function () {
 
 gulp.task('copy-jdb', function() {
    return gulp.src('./node_modules/jungle-db/dist/web*')
-           .pipe(rename(function (path) {
-               path.basename = 'jdb-' + path.basename;
-           }))
            .pipe(gulp.dest('dist/jungle-db'));
 });
 
