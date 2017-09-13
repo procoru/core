@@ -138,7 +138,7 @@ const babel_loader = {
     presets: ['env']
 };
 
-gulp.task('build-web-babel', function () {
+gulp.task('build-web-babel', ['copy-dependencies'], function () {
     return merge(
         browserify([], {
             require: [
@@ -164,8 +164,9 @@ gulp.task('build-web-babel', function () {
             .pipe(source('babel.js'))
             .pipe(buffer())
             .pipe(uglify()),
-        gulp.src(['./src/loader/prefix.js.template'].concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']))
-            .pipe(sourcemaps.init())
+        gulp.src(['./libs/jungle-db/web.js'] // external dependencies
+                .concat(['./src/loader/prefix.js.template']).concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']), { base: '.' })
+            .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(concat('web.js'))
             .pipe(babel(babel_config)))
         .pipe(sourcemaps.init())
@@ -174,7 +175,7 @@ gulp.task('build-web-babel', function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build-web-crypto', function () {
+gulp.task('build-web-crypto', ['copy-dependencies'], function () {
     return merge(
         browserify([], {
             require: [
@@ -185,8 +186,9 @@ gulp.task('build-web-crypto', function () {
             .pipe(source('crypto.js'))
             .pipe(buffer())
             .pipe(uglify()),
-        gulp.src(['./src/loader/prefix.js.template'].concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']))
-            .pipe(sourcemaps.init())
+        gulp.src(['./libs/jungle-db/web.js'] // external dependencies
+            .concat(['./src/loader/prefix.js.template']).concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']), { base: '.' })
+            .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(concat('web.js')))
         .pipe(sourcemaps.init())
         .pipe(concat('web-crypto.js'))
@@ -195,18 +197,19 @@ gulp.task('build-web-crypto', function () {
 });
 
 
-gulp.task('build-web', function () {
-    return gulp.src(['./src/loader/prefix.js.template'].concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']))
-            .pipe(sourcemaps.init())
+gulp.task('build-web', ['copy-dependencies'], function () {
+    return gulp.src(['./libs/jungle-db/web.js'] // external dependencies
+            .concat(['./src/loader/prefix.js.template']).concat(sources.platform.browser).concat(sources.generic).concat(['./src/loader/suffix.js.template']), { base: '.' })
+            .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(concat('web.js'))
             .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest('dist'))
             .pipe(connect.reload());
 });
 
-gulp.task('copy-jdb', function() {
+gulp.task('copy-dependencies', function() {
    return gulp.src('./node_modules/jungle-db/dist/web*')
-           .pipe(gulp.dest('dist/jungle-db'));
+           .pipe(gulp.dest('libs/jungle-db'));
 });
 
 gulp.task('build-loader', function () {
@@ -284,6 +287,6 @@ gulp.task('serve', ['watch'], function () {
     });
 });
 
-gulp.task('build', ['build-web', 'build-web-crypto', 'build-web-babel', 'build-loader', 'build-node', 'copy-jdb']);
+gulp.task('build', ['build-web', 'build-web-crypto', 'build-web-babel', 'build-loader', 'build-node']);
 
 gulp.task('default', ['build', 'serve']);

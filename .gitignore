@@ -12,6 +12,7 @@
 /dist/web*
 /dist/node*
 /dist/jungle-db
+/libs
 /dist/doc/
 .idea
 *.iml

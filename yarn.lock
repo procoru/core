@@ -3673,7 +3673,7 @@ jsprim@^1.2.2:
 
 jungle-db@nimiq-network/jungle-db:
   version "0.2.0"
-  resolved "https://codeload.github.com/nimiq-network/jungle-db/tar.gz/f7cfaaeb0a233a410e2aa8ae0422da1751a62b1c"
+  resolved "https://codeload.github.com/nimiq-network/jungle-db/tar.gz/3ca0ebf9c309918a8c43e60074d51ce7afc5cf36"
   dependencies:
     fs "^0.0.1-security"
     leveldown "^1.6.0"
