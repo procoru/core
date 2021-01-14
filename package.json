@@ -65,7 +65,7 @@
     "jasmine-core": "*",
     "jasmine2-custom-message": "^0.8.2",
     "jscs": "^3.0.7",
-    "karma": "*",
+    "karma": "6.0.0",
     "karma-chrome-launcher": "*",
     "karma-cli": "*",
     "karma-firefox-launcher": "^1.0.1",
